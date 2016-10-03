@@ -1,0 +1,896 @@
+(***************************************************************************************************************)
+(******                       FeynRules mod-file for Model Independent searches of VLQs + Z'/W'           ******)
+(******                                                                                                   ******)
+(******     				             Author: L. Panizzi		                 	  ******)
+(******                                                                                                   ******)
+(***************************************************************************************************************)
+
+M$ModelName = "VLQ";
+
+M$Information = {Authors -> {"L. Panizzi"}, 
+              Version -> "1.0",
+              Date -> "03/10/2016", 
+              Institutions -> {"University of Southampton (School of Physics and Astronomy)"},
+              Emails -> {"l.panizzi@soton.ac.uk"}};
+
+FeynmanGauge = True;
+
+M$InteractionOrderLimit = {
+ {VLQ, 2}, {ZWP, 2}, {VLQVP, 2}, {VPVLQSM,2}
+};
+
+M$InteractionOrderHierarchy = {
+ {QCD, 1}, {QED, 2}, {ZWP, 2}, {VLQVP, 2}, {VPVLQSM,2}
+};
+
+(* ************************** *)
+(* *****    Particles   ***** *)
+(* ************************** *)
+
+
+M$ClassesDescription = {
+
+	(* VLQ Quarks X, Q=5/3*)
+  F[105] == {
+        ClassMembers -> {x},
+	ClassName -> xq,
+	SelfConjugate -> False,
+	Indices -> {Index[Colour]},
+	Mass -> {MX,600},
+        Width -> {WX, 1},
+	QuantumNumbers -> {Q -> 5/3},
+	PropagatorLabel -> {"x"},
+	PropagatorType -> Straight,
+	PropagatorArrow -> Forward,
+        PDG -> {6000005},
+        FullName -> {"X-quark"}},
+
+	(* VLQ Quarks T, Q=2/3 *)
+  F[106] == {
+        ClassName -> tpq,
+        ClassMembers -> {tp},
+	SelfConjugate -> False,
+	Indices -> {Index[Colour]},
+	Mass -> {MTP,600},
+        Width -> {WTP,1},
+	QuantumNumbers -> {Q -> 2/3},
+	PropagatorLabel -> {"tp"},
+	PropagatorType -> Straight,
+	PropagatorArrow -> Forward,
+        PDG -> {6000006},
+        FullName -> {"T-quark"}},
+
+	(* VLQ Quarks B, Q=-1/3 *)
+  F[107] == {
+        ClassName -> bpq,
+        ClassMembers -> {bp},
+	SelfConjugate -> False,
+	Indices -> {Index[Colour]},
+	Mass -> {MBP,600},
+        Width -> {WBP, 1},
+	QuantumNumbers -> {Q -> -1/3},
+	PropagatorLabel -> {"bp"},
+	PropagatorType -> Straight,
+	PropagatorArrow -> Forward,
+        PDG -> {6000007},
+        FullName -> {"B-quark"}},
+
+	(* VLQ Quarks Y, Q=-4/3 *)
+  F[108] == {
+        ClassMembers -> {y},
+	ClassName -> yq,
+	SelfConjugate -> False,
+	Indices -> {Index[Colour]},
+	Mass -> {MY,600},
+        Width -> {WY, 1},
+	QuantumNumbers -> {Q -> -4/3},
+	PropagatorLabel -> {"y"},
+	PropagatorType -> Straight,
+	PropagatorArrow -> Forward,
+        PDG -> {6000008},
+        FullName -> {"Y-quark"}},
+
+(* Vector and Scalar Dark Matter *) 
+
+  V[101] == { 
+            ClassName -> ZP, 
+	    SelfConjugate -> True, 
+	    ParticleName -> "ZP", 
+	    Mass -> {MZP, 1000}, 
+	    Width -> {WZP, 1}, 
+	    PropagatorLabel -> "ZP", 
+	    PropagatorType -> D, 
+	    PropagatorArrow -> None, 
+	    PDG -> 6000023, 
+	    FullName -> "ZP"
+	    },
+
+  V[102] == {
+            ClassName        -> WP,
+            SelfConjugate    -> False,
+            Mass             -> {MWP, 1000},
+            Width            -> {WWP, 1},
+            ParticleName     -> "WP+",
+            AntiParticleName -> "WP-",
+            QuantumNumbers   -> {Q -> 1},
+            PDG              -> 6000024, 
+            PropagatorLabel  -> "WP",
+            PropagatorType   -> Sine,
+            PropagatorArrow  -> Forward,
+            FullName         -> "WP"
+            }
+
+};
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)
+
+M$Parameters = {
+
+
+  (******* External parameters *******)
+
+  (* QQZ couplings *)
+
+  KZTTL == { ParameterType -> External, BlockName -> KZFFL, Value -> 0, Description -> "ZTT Left interaction parameter", InteractionOrder -> {VLQ, 1} },
+  KZTTR == { ParameterType -> External, BlockName -> KZFFL, Value -> 0, Description -> "ZTT Right interaction parameter", InteractionOrder -> {VLQ, 1} },
+
+  KZBBL == { ParameterType -> External, BlockName -> KZFFL, Value -> 0, Description -> "ZBB Left interaction parameter", InteractionOrder -> {VLQ, 1} },
+  KZBBR == { ParameterType -> External, BlockName -> KZFFL, Value -> 0, Description -> "ZBB Right interaction parameter", InteractionOrder -> {VLQ, 1} },
+  
+  KZXXL == { ParameterType -> External, BlockName -> KZFFL, Value -> 0, Description -> "ZXX Left interaction parameter", InteractionOrder -> {VLQ, 1} },
+  KZXXR == { ParameterType -> External, BlockName -> KZFFL, Value -> 0, Description -> "ZXX Right interaction parameter", InteractionOrder -> {VLQ, 1} },
+
+  KZYYL == { ParameterType -> External, BlockName -> KZFFL, Value -> 0, Description -> "ZYY Left interaction parameter", InteractionOrder -> {VLQ, 1} },
+  KZYYR == { ParameterType -> External, BlockName -> KZFFL, Value -> 0, Description -> "ZYY Right interaction parameter", InteractionOrder -> {VLQ, 1} },
+
+  (* ZP SM couplings *)
+
+  KZPuuL == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Left coupling" },
+  KZPucL == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Left coupling" },
+  KZPutL == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Left coupling" },
+  KZPccL == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Left coupling" },
+  KZPctL == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Left coupling" },
+  KZPttL == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Left coupling" },
+  KZPddL == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Left coupling" },
+  KZPdsL == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Left coupling" },
+  KZPdbL == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Left coupling" },
+  KZPssL == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Left coupling" },
+  KZPsbL == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Left coupling" },
+  KZPbbL == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Left coupling" },
+
+  KZPuuR == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Right coupling" },
+  KZPucR == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Right coupling" },
+  KZPutR == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Right coupling" },
+  KZPccR == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Right coupling" },
+  KZPctR == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Right coupling" },
+  KZPttR == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Right coupling" },
+  KZPddR == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Right coupling" },
+  KZPdsR == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Right coupling" },
+  KZPdbR == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Right coupling" },
+  KZPssR == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Right coupling" },
+  KZPsbR == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Right coupling" },
+  KZPbbR == { ParameterType -> External, BlockName -> KZPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "ZP qSM Right coupling" },
+
+  KWPudL == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Left coupling" },
+  KWPusL == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Left coupling" },
+  KWPubL == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Left coupling" },
+  KWPcdL == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Left coupling" },
+  KWPcsL == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Left coupling" },
+  KWPcbL == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Left coupling" },
+  KWPtdL == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Left coupling" },
+  KWPtsL == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Left coupling" },
+  KWPtbL == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Left coupling" },
+
+  KWPudR == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Right coupling" },
+  KWPusR == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Right coupling" },
+  KWPubR == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Right coupling" },
+  KWPcdR == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Right coupling" },
+  KWPcsR == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Right coupling" },
+  KWPcbR == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Right coupling" },
+  KWPtdR == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Right coupling" },
+  KWPtsR == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Right coupling" },
+  KWPtbR == { ParameterType -> External, BlockName -> KWPSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {ZWP, 1}, Description -> "WP qSM Right coupling" },
+
+  (* T SM couplings *)
+
+  KWdTPL == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Left coupling" },
+  KWsTPL == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Left coupling" },
+  KWbTPL == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Left coupling" },
+  KZuTPL == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Left coupling" },
+  KZcTPL == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Left coupling" },
+  KZtTPL == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Left coupling" },
+  KHuTPL == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Left coupling" },
+  KHcTPL == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Left coupling" },
+  KHtTPL == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Left coupling" },
+   
+  KWdTPR == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Right coupling" },
+  KWsTPR == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Right coupling" },
+  KWbTPR == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Right coupling" },
+  KZuTPR == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Right coupling" },
+  KZcTPR == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Right coupling" },
+  KZtTPR == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Right coupling" },
+  KHuTPR == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Right coupling" },
+  KHcTPR == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Right coupling" },
+  KHtTPR == { ParameterType -> External, BlockName -> KTSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "T qSM Right coupling" },
+
+  (* B SM couplings *)
+
+  KWuBPL == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Left coupling" },
+  KWcBPL == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Left coupling" },
+  KWtBPL == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Left coupling" },
+  KZdBPL == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Left coupling" },
+  KZsBPL == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Left coupling" },
+  KZbBPL == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Left coupling" },
+  KHdBPL == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Left coupling" },
+  KHsBPL == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Left coupling" },
+  KHbBPL == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Left coupling" },
+   
+  KWuBPR == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Right coupling" },
+  KWcBPR == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Right coupling" },
+  KWtBPR == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Right coupling" },
+  KZdBPR == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Right coupling" },
+  KZsBPR == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Right coupling" },
+  KZbBPR == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Right coupling" },
+  KHdBPR == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Right coupling" },
+  KHsBPR == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Right coupling" },
+  KHbBPR == { ParameterType -> External, BlockName -> KBSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "B qSM Right coupling" },
+   
+  (* X SM couplings *)
+
+  KWuXL == { ParameterType -> External, BlockName -> KXSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "X qSM Left coupling" },
+  KWcXL == { ParameterType -> External, BlockName -> KXSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "X qSM Left coupling" },
+  KWtXL == { ParameterType -> External, BlockName -> KXSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "X qSM Left coupling" },
+
+  KWuXR == { ParameterType -> External, BlockName -> KXSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "X qSM Right coupling" },
+  KWcXR == { ParameterType -> External, BlockName -> KXSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "X qSM Right coupling" },
+  KWtXR == { ParameterType -> External, BlockName -> KXSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "X qSM Right coupling" },
+   
+  (* Y SM couplings *)
+
+  KWdYL == { ParameterType -> External, BlockName -> KYSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "Y qSM Left coupling" },
+  KWsYL == { ParameterType -> External, BlockName -> KYSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "Y qSM Left coupling" },
+  KWbYL == { ParameterType -> External, BlockName -> KYSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "Y qSM Left coupling" },
+
+  KWdYR == { ParameterType -> External, BlockName -> KYSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "Y qSM Right coupling" },
+  KWsYR == { ParameterType -> External, BlockName -> KYSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "Y qSM Right coupling" },
+  KWbYR == { ParameterType -> External, BlockName -> KYSM, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQ, 1}, Description -> "Y qSM Right coupling" },
+
+  (* ZP VLQ couplings *)
+
+  KZPTPTPL == { ParameterType -> External, BlockName -> KZPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "ZP VLQ Left coupling" },
+  KZPBPBPL == { ParameterType -> External, BlockName -> KZPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "ZP VLQ Left coupling" },
+  KZPXXL == { ParameterType -> External, BlockName -> KZPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "ZP VLQ Left coupling" },
+  KZPYYL == { ParameterType -> External, BlockName -> KZPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "ZP VLQ Left coupling" },
+
+  KZPTPTPR == { ParameterType -> External, BlockName -> KZPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "ZP VLQ Right coupling" },
+  KZPBPBPR == { ParameterType -> External, BlockName -> KZPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "ZP VLQ Right coupling" },
+  KZPXXR == { ParameterType -> External, BlockName -> KZPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "ZP VLQ Right coupling" },
+  KZPYYR == { ParameterType -> External, BlockName -> KZPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "ZP VLQ Right coupling" },
+
+  (* WP VLQ couplings *)
+
+  KWPXTPL == { ParameterType -> External, BlockName -> KWPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "WP VLQ Left coupling" },
+  KWPTPBPL == { ParameterType -> External, BlockName -> KWPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "WP VLQ Left coupling" },
+  KWPBPYL == { ParameterType -> External, BlockName -> KWPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "WP VLQ Left coupling" },
+
+  KWPXTPR == { ParameterType -> External, BlockName -> KWPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "WP VLQ Right coupling" },
+  KWPTPBPR == { ParameterType -> External, BlockName -> KWPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "WP VLQ Right coupling" },
+  KWPBPYR == { ParameterType -> External, BlockName -> KWPVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VLQVP, 1}, Description -> "WP VLQ Right coupling" },
+
+  (* ZP VLQ SM couplings *)
+
+  KZPuTPL == { ParameterType -> External, BlockName -> KZPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KZPcTPL == { ParameterType -> External, BlockName -> KZPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KZPtTPL == { ParameterType -> External, BlockName -> KZPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KZPdBPL == { ParameterType -> External, BlockName -> KZPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KZPsBPL == { ParameterType -> External, BlockName -> KZPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KZPbBPL == { ParameterType -> External, BlockName -> KZPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+
+  KZPuTPR == { ParameterType -> External, BlockName -> KZPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KZPcTPR == { ParameterType -> External, BlockName -> KZPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KZPtTPR == { ParameterType -> External, BlockName -> KZPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KZPdBPR == { ParameterType -> External, BlockName -> KZPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KZPsBPR == { ParameterType -> External, BlockName -> KZPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KZPbBPR == { ParameterType -> External, BlockName -> KZPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+
+  (* WP VLQ SM couplings *)
+
+  KWPuXL == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "WP Q q Left coupling" },
+  KWPcXL == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KWPtXL == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KWPdTPL == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KWPsTPL == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KWPbTPL == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KWPuBPL == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "WP Q q Left coupling" },
+  KWPcBPL == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KWPtBPL == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KWPdYL == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KWPsYL == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+  KWPbYL == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Left coupling" },
+
+  KWPuXR == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "WP Q q Right coupling" },
+  KWPcXR == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KWPtXR == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KWPdTPR == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KWPsTPR == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KWPbTPR == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KWPuBPR == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "WP Q q Right coupling" },
+  KWPcBPR == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KWPtBPR == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KWPdYR == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KWPsYR == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+  KWPbYR == { ParameterType -> External, BlockName -> KWPSMVLQ, ComplexParameter -> False, Value -> 0, InteractionOrder -> {VPVLQSM, 1}, Description -> "ZP Q q Right coupling" },
+
+  (******* Internal parameters *******)
+
+  (* ZPqq couplings *)
+
+  KZPuquqL == { 
+                ParameterType -> Internal,
+                BlockName -> KZPSM,
+                Indices->{Index[Generation],Index[Generation]}, 
+                ComplexParameter -> False,
+                Value -> { 
+	   	        KZPuquqL[1,1] -> KZPuuL, KZPuquqL[1,2] -> KZPucL, KZPuquqL[1,3] -> KZPutL,
+	   	        KZPuquqL[2,1] -> KZPucL, KZPuquqL[2,2] -> KZPccL, KZPuquqL[2,3] -> KZPctL,
+	   	        KZPuquqL[3,1] -> KZPutL, KZPuquqL[3,2] -> KZPctL, KZPuquqL[3,3] -> KZPttL
+	   	      },
+                InteractionOrder -> {ZWP, 1},
+                Description -> "ZP left-handed coupling with up-quarks"
+              },
+     
+  KZPuquqR == { 
+                ParameterType -> Internal,
+                BlockName -> KZPSM,
+                Indices->{Index[Generation],Index[Generation]}, 
+                ComplexParameter -> False,
+                Value -> { 
+	   	        KZPuquqR[1,1] -> KZPuuR, KZPuquqR[1,2] -> KZPucR, KZPuquqR[1,3] -> KZPutR,
+	   	        KZPuquqR[2,1] -> KZPcuR, KZPuquqR[2,2] -> KZPccR, KZPuquqR[2,3] -> KZPctR,
+	   	        KZPuquqR[3,1] -> KZPutR, KZPuquqR[3,2] -> KZPctR, KZPuquqR[3,3] -> KZPttR
+	   	      },
+                InteractionOrder -> {ZWP, 1},
+                Description -> "ZP right-handed coupling with up-quarks"
+              },
+     
+  KZPdqdqL == { 
+                ParameterType -> Internal,
+                BlockName -> KZPSM,
+                Indices->{Index[Generation],Index[Generation]}, 
+                ComplexParameter -> False,
+                Value -> { 
+	   	        KZPdqdqL[1,1] -> KZPddL, KZPdqdqL[1,2] -> KZPdsL, KZPdqdqL[1,3] -> KZPdbL,
+	   	        KZPdqdqL[2,1] -> KZPdsL, KZPdqdqL[2,2] -> KZPssL, KZPdqdqL[2,3] -> KZPsbL,
+	   	        KZPdqdqL[3,1] -> KZPdbL, KZPdqdqL[3,2] -> KZPsbL, KZPdqdqL[3,3] -> KZPbbL
+	   	      },
+                InteractionOrder -> {ZWP, 1},
+                Description -> "ZP left-handed coupling with down-quarks"
+              },
+     
+  KZPdqdqR == { 
+                ParameterType -> Internal,
+                BlockName -> KZPSM,
+                Indices->{Index[Generation],Index[Generation]}, 
+                ComplexParameter -> False,
+                Value -> { 
+	   	        KZPdqdqR[1,1] -> KZPddR, KZPdqdqR[1,2] -> KZPdsR, KZPdqdqR[1,3] -> KZPdbR,
+	   	        KZPdqdqR[2,1] -> KZPdsR, KZPdqdqR[2,2] -> KZPssR, KZPdqdqR[2,3] -> KZPsbR,
+	   	        KZPdqdqR[3,1] -> KZPdbR, KZPdqdqR[3,2] -> KZPsbR, KZPdqdqR[3,3] -> KZPbbR
+	   	      },
+                InteractionOrder -> {ZWP, 1},
+                Description -> "ZP right-handed coupling with down-quarks"
+              },
+     
+
+  (* WPqq couplings *)
+
+  KWPqqL == { 
+                ParameterType -> Internal,
+                BlockName -> KWPSM,
+                Indices->{Index[Generation],Index[Generation]}, 
+                ComplexParameter -> False,
+                Value -> { 
+	   	        KWPudL[1,1] -> KWPudL, KWPcdL[1,2] -> KWPcdL, KWPtdL[1,3] -> KWPtdL,
+	   	        KWPusL[2,1] -> KWPusL, KWPcsL[2,2] -> KWPcsL, KWPtsL[2,3] -> KWPtsL,
+	   	        KWPubL[3,1] -> KWPubL, KWPcbL[3,2] -> KWPcbL, KWPtbL[3,3] -> KWPtbL
+	   	      },
+                InteractionOrder -> {ZWP, 1},
+                Description -> "WP left-handed coupling with SM quarks"
+              },
+     
+  KWPqqR == { 
+                ParameterType -> Internal,
+                BlockName -> KWPSM,
+                Indices->{Index[Generation],Index[Generation]}, 
+                ComplexParameter -> False,
+                Value -> { 
+	   	        KWPudR[1,1] -> KWPudR, KWPcdR[1,2] -> KWPcdR, KWPtdR[1,3] -> KWPtdR,
+	   	        KWPusR[2,1] -> KWPusR, KWPcsR[2,2] -> KWPcsR, KWPtsR[2,3] -> KWPtsR,
+	   	        KWPubR[3,1] -> KWPubR, KWPcbR[3,2] -> KWPcbR, KWPtbR[3,3] -> KWPtbR
+	   	      },
+                InteractionOrder -> {ZWP, 1},
+                Description -> "WP left-handed coupling with SM quarks"
+              },
+     
+  (* Tq couplings *)
+
+
+  KWqTPL == { 
+              ParameterType -> Internal,
+              BlockName -> KTSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KWqTPL[1] -> KWdTPL, KWqTPL[2] -> KWsTPL, KWqTPL[3] -> KWbTPL
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "T coupling with SM quarks and bosons"
+            },
+     
+  KWqTPR == { 
+              ParameterType -> Internal,
+              BlockName -> KTSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KWqTPR[1] -> KWdTPR, KWqTPR[2] -> KWsTPR, KWqTPR[3] -> KWbTPR
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "T coupling with SM quarks and bosons"
+            },
+     
+  KZqTPL == { 
+              ParameterType -> Internal,
+              BlockName -> KTSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KZqTPL[1] -> KZuTPL, KZqTPL[2] -> KZcTPL, KZqTPL[3] -> KZtTPL
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "T coupling with SM quarks and bosons"
+            },
+     
+  KZqTPR == { 
+              ParameterType -> Internal,
+              BlockName -> KTSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KZqTPR[1] -> KZuTPR, KZqTPR[2] -> KZcTPR, KZqTPR[3] -> KZtTPR
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "T coupling with SM quarks and bosons"
+            },
+     
+  KHqTPL == { 
+              ParameterType -> Internal,
+              BlockName -> KTSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KHqTPL[1] -> KHuTPL, KHqTPL[2] -> KHcTPL, KHqTPL[3] -> KHtTPL
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "T coupling with SM quarks and bosons"
+            },
+     
+  KHqTPR == { 
+              ParameterType -> Internal,
+              BlockName -> KTSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KHqTPR[1] -> KHuTPR, KHqTPR[2] -> KHcTPR, KHqTPR[3] -> KHtTPR
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "T coupling with SM quarks and bosons"
+            },
+     
+  (* Bq couplings *)
+
+
+  KWqBPL == { 
+              ParameterType -> Internal,
+              BlockName -> KBSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KWqBPL[1] -> KWuBPL, KWqBPL[2] -> KWcBPL, KWqBPL[3] -> KWtBPL
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "B coupling with SM quarks and bosons"
+            },
+     
+  KWqBPR == { 
+              ParameterType -> Internal,
+              BlockName -> KBSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KWqBPR[1] -> KWuBPR, KWqBPR[2] -> KWcBPR, KWqBPR[3] -> KWtBPR
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "B coupling with SM quarks and bosons"
+            },
+     
+  KZqBPL == { 
+              ParameterType -> Internal,
+              BlockName -> KBSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KZqBPL[1] -> KZdBPL, KZqBPL[2] -> KZsBPL, KZqBPL[3] -> KZbBPL
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "B coupling with SM quarks and bosons"
+            },
+     
+  KZqBPR == { 
+              ParameterType -> Internal,
+              BlockName -> KBSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KZqBPR[1] -> KZdBPR, KZqBPR[2] -> KZsBPR, KZqBPR[3] -> KZbBPR
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "B coupling with SM quarks and bosons"
+            },
+     
+  KHqBPL == { 
+              ParameterType -> Internal,
+              BlockName -> KBSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KHqBPL[1] -> KHdBPL, KHqBPL[2] -> KHsBPL, KHqBPL[3] -> KHbBPL
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "B coupling with SM quarks and bosons"
+            },
+     
+  KHqBPR == { 
+              ParameterType -> Internal,
+              BlockName -> KBSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KHqBPR[1] -> KHdBPR, KHqBPR[2] -> KHsBPR, KHqBPR[3] -> KHbBPR
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "B coupling with SM quarks and bosons"
+            },
+     
+  (* Xq couplings *)
+
+
+  KWqXL == { 
+              ParameterType -> Internal,
+              BlockName -> KXSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KWqXL[1] -> KWuXL, KWqXL[2] -> KWcXL, KWqXL[3] -> KWtXL
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "X coupling with SM quarks and bosons"
+            },
+     
+  KWqXR == { 
+              ParameterType -> Internal,
+              BlockName -> KXSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KWqXR[1] -> KWuXR, KWqXR[2] -> KWcXR, KWqXR[3] -> KWtXR
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "X coupling with SM quarks and bosons"
+            },
+     
+  (* Yq couplings *)
+
+  KWqYL == { 
+              ParameterType -> Internal,
+              BlockName -> KYSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KWqYL[1] -> KWdYL, KWqYL[2] -> KWsYL, KWdYL[3] -> KWbYL
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "Y coupling with SM quarks and bosons"
+            },
+     
+  KWqYR == { 
+              ParameterType -> Internal,
+              BlockName -> KYSM,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KWqYR[1] -> KWdyR, KWqYR[2] -> KWsYR, KWqYR[3] -> KWbYXR
+	 	      },
+              InteractionOrder -> {VLQ, 1},
+              Description -> "Y coupling with SM quarks and bosons"
+            },
+            
+  (* ZPqQ couplings *)
+
+  KZPqTPL == { 
+              ParameterType -> Internal,
+              BlockName -> KZPSMVLQ,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KZPqTPL[1] -> KZPuTPL, KZPqTPL[2] -> KZPcTPL, KZPqTPL[3] -> KZPtTPL
+	 	      },
+              InteractionOrder -> {VPVLQSM, 1},
+              Description -> "ZP coupling with SM quarks and VLQ"
+            },
+     
+  KZPqTPR == { 
+              ParameterType -> Internal,
+              BlockName -> KZPSMVLQ,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KZPqTPR[1] -> KZPuTPR, KZPqTPR[2] -> KZPcTPR, KZPqTPR[3] -> KZPtTPR
+	 	      },
+              InteractionOrder -> {VPVLQSM, 1},
+              Description -> "ZP coupling with SM quarks and VLQ"
+            },
+     
+  KZPqBPL == { 
+              ParameterType -> Internal,
+              BlockName -> KZPSMVLQ,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KZPqBPL[1] -> KZPdBPL, KZPqBPL[2] -> KZPsBPL, KZPqBPL[3] -> KZPbBPL
+	 	      },
+              InteractionOrder -> {VPVLQSM, 1},
+              Description -> "ZP coupling with SM quarks and VLQ"
+            },
+     
+  KZPqBPR == { 
+              ParameterType -> Internal,
+              BlockName -> KZPSMVLQ,
+              Indices->{Index[Generation]}, 
+              ComplexParameter -> False,
+              Value -> { 
+	 	        KZPqBPR[1] -> KZPdBPR, KZPqBPR[2] -> KZPsBPR, KZPqBPR[3] -> KZPbBPR
+	 	      },
+              InteractionOrder -> {VPVLQSM, 1},
+              Description -> "ZP coupling with SM quarks and VLQ"
+            },
+            
+  (* WPqQ couplings *)
+
+  KWPqXL == { 
+             ParameterType -> Internal,
+             BlockName -> KWPSMVLQ,
+             Indices->{Index[Generation]}, 
+             ComplexParameter -> False,
+             Value -> { 
+	         KWPqXL[1] -> KWPuXL, KWPqXL[2] -> KWPcXL, KWPqXL[3] -> KWPtXL
+	       },
+             InteractionOrder -> {VPVLQSM, 1},
+             Description -> "WP coupling with SM quarks and VLQ"
+           },
+     
+  KWPqXR == { 
+             ParameterType -> Internal,
+             BlockName -> KWPSMVLQ,
+             Indices->{Index[Generation]}, 
+             ComplexParameter -> False,
+             Value -> { 
+	         KWPqXR[1] -> KWPuXR, KWPqXR[2] -> KWPcXR, KWPqXR[3] -> KWPtXR
+	       },
+             InteractionOrder -> {VPVLQSM, 1},
+             Description -> "WP coupling with SM quarks and VLQ"
+           },
+     
+  KWPqTPL == { 
+             ParameterType -> Internal,
+             BlockName -> KWPSMVLQ,
+             Indices->{Index[Generation]}, 
+             ComplexParameter -> False,
+             Value -> { 
+	         KWPqTPL[1] -> KWPdTPL, KWPqTPL[2] -> KWPsTPL, KWPqTPL[3] -> KWPbTPL
+	       },
+             InteractionOrder -> {VPVLQSM, 1},
+             Description -> "WP coupling with SM quarks and VLQ"
+           },
+     
+  KWPqTPR == { 
+             ParameterType -> Internal,
+             BlockName -> KWPSMVLQ,
+             Indices->{Index[Generation]}, 
+             ComplexParameter -> False,
+             Value -> { 
+	         KWPqTPR[1] -> KWPdTPR, KWPqTPR[2] -> KWPsTPR, KWPqTPR[3] -> KWPbTPR
+	       },
+             InteractionOrder -> {VPVLQSM, 1},
+             Description -> "WP coupling with SM quarks and VLQ"
+           },
+     
+  KWPqBPL == { 
+             ParameterType -> Internal,
+             BlockName -> KWPSMVLQ,
+             Indices->{Index[Generation]}, 
+             ComplexParameter -> False,
+             Value -> { 
+	         KWPqBPL[1] -> KWPuBPL, KWPqBPL[2] -> KWPcBPL, KWPqBPL[3] -> KWPtBPL
+	       },
+             InteractionOrder -> {VPVLQSM, 1},
+             Description -> "WP coupling with SM quarks and VLQ"
+           },
+     
+  KWPqBPR == { 
+             ParameterType -> Internal,
+             BlockName -> KWPSMVLQ,
+             Indices->{Index[Generation]}, 
+             ComplexParameter -> False,
+             Value -> { 
+	         KWPqBPR[1] -> KWPuBPR, KWPqBPR[2] -> KWPcBPR, KWPqBPR[3] -> KWPtBPR
+	       },
+             InteractionOrder -> {VPVLQSM, 1},
+             Description -> "WP coupling with SM quarks and VLQ"
+           },
+     
+  KWPqYL == { 
+             ParameterType -> Internal,
+             BlockName -> KWPSMVLQ,
+             Indices->{Index[Generation]}, 
+             ComplexParameter -> False,
+             Value -> { 
+	         KWPqYL[1] -> KWPdYL, KWPqYL[2] -> KWPsYL, KWPqYL[3] -> KWPbYL
+	       },
+             InteractionOrder -> {VPVLQSM, 1},
+             Description -> "WP coupling with SM quarks and VLQ"
+           },
+     
+  KWPqYR == { 
+             ParameterType -> Internal,
+             BlockName -> KWPSMVLQ,
+             Indices->{Index[Generation]}, 
+             ComplexParameter -> False,
+             Value -> { 
+	         KWPqYR[1] -> KWPdYR, KWPqYR[2] -> KWPsYR, KWPqYR[3] -> KWPbYR
+	       },
+             InteractionOrder -> {VPVLQSM, 1},
+             Description -> "WP coupling with SM quarks and VLQ"
+           }
+     
+};
+
+
+
+
+
+(* ************************** *)
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+(* ************************** *)
+
+(**********************************************)
+(********* Vprime Kinetic Lagrangians *********)
+(**********************************************)
+
+LZPK := -1/4 (del[ZP[nu], mu] - del[ZP[mu],nu]).(del[ZP[nu], mu] - del[ZP[mu],nu]) + 1/2 MZP^2 ZP[mu].ZP[mu];
+LWPK := -1/2 (del[WPbar[nu], mu] - del[WPbar[mu],nu]).(del[WP[nu], mu] - del[WP[mu],nu]) + MWP^2 WPbar[mu].WP[mu];
+
+(*******************************************************)
+(*********Kinetic, mass & QCD lagrangians for VLQ*******)
+(*******************************************************)
+
+LTK := I tpbar.Ga[mu].DC[tp, mu];
+LBK := I bpbar.Ga[mu].DC[bp, mu];
+LXK := I xbar.Ga[mu].DC[x, mu];
+LYK := I ybar.Ga[mu].DC[y, mu];
+
+LTM := -MTP tpbar.tp;
+LBM := -MBP bpbar.bp;
+LXM := -MX xbar.x;
+LYM := -MY ybar.y;
+
+LTA :=  2*ee/3 (tpbar.Ga[mu].tp)A[mu];
+LBA :=  -1*ee/3 (bpbar.Ga[mu].bp)A[mu]; 
+LXA :=  5*ee/3 (xbar.Ga[mu].x)A[mu]; 
+LYA :=  -4*ee/3 (ybar.Ga[mu].y)A[mu]; 
+
+LTTZ :=  KZTTL Z[mu] tpbar.Ga[mu].ProjM.tp + KZTTR Z[mu] tpbar.Ga[mu].ProjP.tp ;
+LBBZ :=  KZBBL Z[mu] bpbar.Ga[mu].ProjM.bp + KZBBR Z[mu] bpbar.Ga[mu].ProjP.bp ;
+LXXZ := KZXXL Z[mu] xbar.Ga[mu].ProjM.x + KZTTR Z[mu] xbar.Ga[mu].ProjP.x;
+LYYZ := KZYYL Z[mu] ybar.Ga[mu].ProjM.y + KZBBR Z[mu] ybar.Ga[mu].ProjP.y;
+
+(**************************************)
+(*********Vprime SM Interactions*******)
+(**************************************)
+
+LZPqq := KZPuquqL[ff1,ff2] ZP[mu] uqbar[sp1,ff1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].uq[sp3,ff2,cc] + KZPuquqR[ff1,ff2] ZP[mu] uqbar[sp1,ff1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].uq[sp3,ff2,cc];
+LWPqq := KWPqqL[ff1,ff2] WP[mu] uqbar[sp1,ff1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].dq[sp3,ff2,cc];
+
+(***********************************)
+(*********VLQ SM Interactions*******)
+(***********************************)
+(** We assume that the physical and mass eigenstates match for vector-like quarks **)
+	 	
+(*********LT, EW interactions*******)
+
+LTW := KWqTPL[ff] W[mu] tpbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].dq[sp3,ff,cc] + KWqTPR[ff] W[mu] tpbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].dq[sp3,ff,cc]; 
+LTZ := KZqTPL[ff] Z[mu] tpbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].uq[sp3,ff,cc] + KZqTPR[ff] Z[mu] tpbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].uq[sp3,ff,cc];  
+LTH := KHqTPL[ff] H tpbar[sp1,cc].ProjM[sp1,sp3].uq[sp3,ff,cc] + KHqTPR[ff] H tpbar[sp1,cc].ProjP[sp1,sp3].uq[sp3,ff,cc];
+
+(*********LB, EW interactions*******)
+
+LBW := KWqBPL[ff] Wbar[mu] bpbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].uq[sp3,ff,cc] + KWqBPR[ff] Wbar[mu] bpbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].uq[sp3,ff,cc]; 
+LBZ := KZqBPL[ff] Z[mu] bpbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].dq[sp3,ff,cc] + KZqBPR[ff] Z[mu] bpbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].dq[sp3,ff,cc];  
+LBH := KHqBPL[ff] H bpbar[sp1,cc].ProjM[sp1,sp3].dq[sp3,ff,cc] + KHqBPR[ff] H bpbar[sp1,cc].ProjP[sp1,sp3].dq[sp3,ff,cc];
+
+(*********LX, EW interactions*******)
+
+LXW := KWqXL[ff] W[mu] xbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].uq[sp3,ff,cc] + KWqXR[ff] W[mu] xbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].uq[sp3,ff,cc];
+
+(*********LY, EW interactions*******)
+
+LYW := KWqYL[ff] Wbar[mu] ybar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].dq[sp3,ff,cc] + KWqYR[ff] Wbar[mu] ybar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].dq[sp3,ff,cc];
+
+(***************************************)
+(*********Vprime VLQ Interactions*******)
+(***************************************)
+
+LZPQQ := 
+         
+         (* Left sector *)
+       ( KZPTPTPL ZP[mu] tpbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].tp[sp3,cc] 
+       + KZPBPBPL ZP[mu] bpbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].bp[sp3,cc] 
+       + KZPXXL ZP[mu] xbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].x[sp3,cc] 
+       + KZPYYL ZP[mu] ybar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].y[sp3,cc] 
+
+
+         (* Right sector *)
+       + KZPTPTPR ZP[mu] tpbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].tp[sp3,cc] 
+       + KZPBPBPR ZP[mu] bpbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].bp[sp3,cc] 
+       + KZPXXR ZP[mu] xbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].x[sp3,cc] 
+       + KZPYYR ZP[mu] ybar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].y[sp3,cc] );
+
+LWPQQ := 
+         
+         (* Left sector *)
+       ( KWPXTPL WP[mu] xbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].tp[sp3,cc] 
+       + KWPTPBPL WP[mu] tpbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].bp[sp3,cc] 
+       + KWPBPYL WP[mu] bpbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].y[sp3,cc] 
+
+         (* Right sector *)
+       + KWPXTPR WP[mu] xbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].tp[sp3,cc] 
+       + KWPTPBPR WP[mu] tpbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].bp[sp3,cc] 
+       + KWPBPYR WP[mu] bpbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].y[sp3,cc] );
+
+(**************************************)
+(*********Vprime SM Interactions*******)
+(**************************************)
+
+LZPqQ := ( KZPqTPL[ff] ZP[mu] tpbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].uq[sp3,ff,cc] + KZPqTPR[ff] ZP[mu] tpbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].uq[sp3,ff,cc] 
+	 + KZPqBPL[ff] ZP[mu] bpbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].dq[sp3,ff,cc] + KZPqBPR[ff] ZP[mu] bpbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].dq[sp3,ff,cc] );
+
+LWPqQ := ( KWPqXL[ff] WP[mu] xbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].uq[sp3,ff,cc] + KWPqXR[ff] WP[mu] xbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].uq[sp3,ff,cc]  
+         + KWPqTPL[ff] WP[mu] tpbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].dq[sp3,ff,cc] + KWPqTPR[ff] WP[mu] tpbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].dq[sp3,ff,cc]  
+         + KWPqBPL[ff] WPbar[mu] bpbar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].uq[sp3,ff,cc] + KWPqBPR[ff] WPbar[mu] bpbar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].uq[sp3,ff,cc]  
+         + KWPqYL[ff] WPbar[mu] ybar[sp1,cc].Ga[mu,sp1,sp2].ProjM[sp2,sp3].dq[sp3,ff,cc] + KWPqYR[ff] WPbar[mu] ybar[sp1,cc].Ga[mu,sp1,sp2].ProjP[sp2,sp3].dq[sp3,ff,cc] );
+	 
+(******************************************)
+(********* TOTAL LAGRANGIAN ***************)
+(******************************************)
+
+LT := LTK + LTM + LTA + LTTZ + LTW + LTZ + LTH + HC[LTW + LTZ + LTH];
+LB := LBK + LBM + LBA + LBBZ + LBW + LBZ + LBH + HC[LBW + LBZ + LBH];
+LX := LXK + LXM + LXA + LXXZ + LXW + HC[LXW];
+LY := LYK + LYM + LYA + LYYZ + LYW + HC[LYW];
+
+
+LVLQVP := LZPK + LWPK + LT + LB + LX + LY + LZPqq + LWPqq + LZPQQ + LWPQQ + LZPqQ + LWPqQ + HC[LZPqq + LWPqq + LWPQQ + LZPqQ + LWPqQ];

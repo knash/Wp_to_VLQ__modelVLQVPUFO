@@ -1,0 +1,108 @@
+# This file was automatically created by FeynRules 2.3.24
+# Mathematica version: 9.0 for Linux x86 (64-bit) (February 7, 2013)
+# Date: Mon 3 Oct 2016 13:50:24
+
+
+# 
+# This is the logfile for the model VLQ
+
+# Authors: L. Panizzi
+# Model version: 1.0
+# Checking the Quantum numbers
+   * Electric charge defined.
+# Checking the Lagrangians
+   * All Lagrangians are ok.
+#
+# Particle definitions
+#
+
+   * No particles removed. All particles correspond to GenInt setup.
+
+# Automatically assigned PDG numbers
+   * Assigned PDG number 9000001 to particle ghA
+   * Assigned PDG number 9000002 to particle ghZ
+   * Assigned PDG number 9000003 to particle ghWp
+   * Assigned PDG number 9000004 to particle ghWm
+
+
+# Compulsory PDG codes:
+   * Class SM leptons complete.
+   * Class SM neutrinos complete.
+   * Class SM quarks complete.
+   * Class SM gauge bosons complete.
+#
+# Parameter definitions
+#
+
+   * Parameter KWPqqL1x1 has no value. Default value 1 assigned.
+   * Parameter KWPqqL1x2 has no value. Default value 1 assigned.
+   * Parameter KWPqqL1x3 has no value. Default value 1 assigned.
+   * Parameter KWPqqL2x1 has no value. Default value 1 assigned.
+   * Parameter KWPqqL2x2 has no value. Default value 1 assigned.
+   * Parameter KWPqqL2x3 has no value. Default value 1 assigned.
+   * Parameter KWPqqL3x1 has no value. Default value 1 assigned.
+   * Parameter KWPqqL3x2 has no value. Default value 1 assigned.
+   * Parameter KWPqqL3x3 has no value. Default value 1 assigned.
+   * Parameter KWPqqR1x1 has no value. Default value 1 assigned.
+   * Parameter KWPqqR1x2 has no value. Default value 1 assigned.
+   * Parameter KWPqqR1x3 has no value. Default value 1 assigned.
+   * Parameter KWPqqR2x1 has no value. Default value 1 assigned.
+   * Parameter KWPqqR2x2 has no value. Default value 1 assigned.
+   * Parameter KWPqqR2x3 has no value. Default value 1 assigned.
+   * Parameter KWPqqR3x1 has no value. Default value 1 assigned.
+   * Parameter KWPqqR3x2 has no value. Default value 1 assigned.
+   * Parameter KWPqqR3x3 has no value. Default value 1 assigned.
+   * Parameter KWqYL3 has no value. Default value 1 assigned.
+   * Parameter KWqYR1 has no value. Default value 1 assigned.
+   * Parameter KWqYR3 has no value. Default value 1 assigned.
+   * Parameter KZPuquqR2x1 has no value. Default value 1 assigned.
+
+
+# Vertices
+   * Calling FeynmanRules for 1 Lagrangians.
+   * Number of classes vertices: 146
+   * Number of flavored vertices: 252
+   * Saved vertices in InterfaceRun[ 1 ].
+   * Checked QNumber conservation.
+      - Quantum number GhostNumber conserved in all vertices.
+      - Quantum number LeptonNumber conserved in all vertices.
+      - Quantum number Q conserved in all vertices.
+      - Quantum number Y conserved in all vertices.
+   * particles.py written.
+   * parameters.py written.
+#
+# Vertex definitions
+#
+
+   * 252 vertices written.
+   * vertices.py written.
+#
+# Lorentz structure definitions
+#
+
+   * 20 lorentz structures written.
+   * lorentz.py written.
+#
+# Coupling definitions
+#
+
+   * 194 couplings written.
+   * couplings.py written.
+#
+# Coupling order definitions
+#
+
+   * 0 couplings orders written.
+   * coupling_orders.py written.
+#
+# Decay definitions
+#
+
+   * 12 decays written.
+   * decay.py not written
+#
+# CTCoupling definitions
+#
+
+   * 0 CTcouplings written.
+   * CT_couplings.py written.
