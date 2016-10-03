@@ -1882,7 +1882,7 @@ KWqYL3 = Parameter(name = 'KWqYL3',
 KWqYR1 = Parameter(name = 'KWqYR1',
                    nature = 'internal',
                    type = 'real',
-                   value = 'KWdyR',
+                   value = 'KWdYR',
                    texname = '\\text{KWqYR1}')
 
 KWqYR2 = Parameter(name = 'KWqYR2',
@@ -1894,7 +1894,7 @@ KWqYR2 = Parameter(name = 'KWqYR2',
 KWqYR3 = Parameter(name = 'KWqYR3',
                    nature = 'internal',
                    type = 'real',
-                   value = 'KWbYXR',
+                   value = 'KWbYR',
                    texname = '\\text{KWqYR3}')
 
 KZPdqdqL1x1 = Parameter(name = 'KZPdqdqL1x1',
@@ -2152,7 +2152,7 @@ KZPuquqR1x3 = Parameter(name = 'KZPuquqR1x3',
 KZPuquqR2x1 = Parameter(name = 'KZPuquqR2x1',
                         nature = 'internal',
                         type = 'real',
-                        value = 'KZPcuR',
+                        value = 'KZPucR',
                         texname = '\\text{KZPuquqR2x1}')
 
 KZPuquqR2x2 = Parameter(name = 'KZPuquqR2x2',

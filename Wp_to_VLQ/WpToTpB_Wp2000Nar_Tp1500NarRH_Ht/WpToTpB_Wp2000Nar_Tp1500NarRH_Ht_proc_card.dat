@@ -10,10 +10,10 @@ define l- = e- mu-
 define vl = ve vm vt
 define vl~ = ve~ vm~ vt~
 import model VLQVP_UFO
-generate p p > WP+ tp > h t b~
-add process p p > WP- tp~ > h t~ b
-add process  p p > WP+ tp > h t b~ j 
-add process p p > WP- tp~ > h t~ b j
+generate p p > wp+ tp > h t b~
+add process p p > wp- tp~ > h t~ b
+add process  p p > wp+ tp > h t b~ j 
+add process p p > wp- tp~ > h t~ b j
 
 
 output WpToTpB_Wp2000Nar_Tp1500NarRH_Ht
