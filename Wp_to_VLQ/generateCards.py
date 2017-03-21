@@ -16,8 +16,8 @@ for Reference_dir in Reference_dirs:
 	FinalStates = ["Ht"]
 	Chiralities =["LH","RH"]
 	Masses = [[1500,[700,900,1200]],[2000,[900,1200,1500]],[2500,[1200,1500,1900]]]
-	Zwidths = [[0.03,'Nar']]#,[0.3,'Wid']]
-	Twidths = [[0,'Nar']]#,[0.1,'Wid']]
+	Zwidths = [[0.03,'Nar'],[0.1,'Wid'],[0.3,'ExWid']]
+	Twidths = [[0,'Nar'],[0.1,'Wid'],[0.3,'ExWid']]
 
 	for state in FinalStates:
 		for hand in Chiralities:
